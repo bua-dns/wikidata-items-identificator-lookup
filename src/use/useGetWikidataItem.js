@@ -1,5 +1,7 @@
 export async function useGetWikidataItem(qid, vars, opt) {
 
+  qid = qid.replace(/^[Qq]/, 'Q'); // Ensure QID starts with 'Q'
+
   const endpointUrl = 'https://query.wikidata.org/sparql';
 
   const query = `
@@ -35,19 +37,5 @@ LIMIT 1
     return null;
   }
 
-  // Assemble result
-  const result = {
-    id: qid,
-    label: {
-      de: bindings.label_de?.value || '',
-      en: bindings.label_en?.value || '',
-    },
-    description: {
-      de: bindings.desc_de?.value || '',
-      en: bindings.desc_en?.value || '',
-    },
-    identifiers: {}
-  };
-
-  return bindings;
+  return { id: qid, ...bindings };
 }

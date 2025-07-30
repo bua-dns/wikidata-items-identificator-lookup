@@ -22,26 +22,26 @@ const input = ref('')
 const wikidataStore = useWikidataItemStore()
 const identifiersStore = useIdentifiersStore()
 const { identifiers } = storeToRefs(identifiersStore)
-console.log('Identifiers in searchBox:', JSON.stringify(identifiers.value, null, 2))
 
-const vars = identifiers.value
+
+
+const termsStore = useTermsStore()
+
+const isValidQid = computed(() => /^[Qq]\d+$/.test(input.value.trim()))
+
+async function handleSubmit() {
+    const vars = identifiers.value
     .filter(identifier => identifier.use)
     .map(identifier => identifier.handle)
     .map(v => `?${v}`)
     .join(' ');
 
-let optionals = identifiers.value.map(i => {
-        if (!i.use) return null;
-        return `OPTIONAL { ?item wdt:${i.pid} ?${i.handle} }`
-    })
+    const optionals = identifiers.value.map(i => {
+            if (!i.use) return null;
+            return `OPTIONAL { ?item wdt:${i.pid} ?${i.handle} }`
+        })
     .filter(Boolean)
     .join(' ');
-
-const termsStore = useTermsStore()
-
-const isValidQid = computed(() => /^Q\d+$/.test(input.value.trim()))
-
-async function handleSubmit() {
     if (!isValidQid.value) {
         console.error('Invalid Q-ID:', input.value)
         return
@@ -136,12 +136,10 @@ function toggleIdentifier(identifier) {
 
     .identifiers-row {
         margin-top: 1rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: flex-start;
+
 
         .checkbox-label {
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.3rem;

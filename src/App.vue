@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from "vue"
+import { storeToRefs } from 'pinia'
 import SearchBoxStatic from './components/SearchBoxStatic.vue'
 import { useTermsStore } from './stores/useTermsStore.js'
 import { useWikidataItemStore } from './stores/useWikidataItemStore.js'
@@ -23,6 +24,18 @@ const copyIdOnly = ref(false) // This is used to toggle between copying full URI
 const termsStore = useTermsStore()
 const wikidataStore = useWikidataItemStore()
 const identifiersStore = useIdentifiersStore()
+
+const { identifiers } = storeToRefs(identifiersStore)
+const { item } = storeToRefs(wikidataStore)
+
+const identifiersOfItem = computed(() => {
+  return identifiers.value.filter(identifier => {
+    return  identifier.use &&
+            item.value && 
+            item.value[identifier.handle] && 
+            item.value[identifier.handle].value
+  })
+})
 
 function addToItemsList(item) {
   termsStore.addToItemsList(item)
@@ -68,14 +81,29 @@ function clearListOfItems() {
           <div class="option">Nur ID kopieren</div>
         </div>
       </div>
-
-      <div class="selected-term" v-if="true">
-        
-
-        <pre v-if="true">{{ selectedTerm }}</pre>
-        <pre v-if="true">{{ wikidataStore.item }}</pre>
-        <pre v-if="true">{{ identifiersStore.identifiers }}</pre>
+      <div class="feedback" v-if="item">
+        Das Wikidata-Item <strong>{{ item.label_de.value }}</strong> mit der ID 
+        <strong>{{ item.id }}</strong> wurde gefunden.
+        <div v-if="identifiersOfItem.length === 0">Ihm ist keiner der ausgewählten Identifikatoren zugeordnet.
+        </div>
       </div>
+      <div class="selected-term" v-if="true">
+        <div class="item-content" v-if="item && identifiersOfItem.length">
+              <div class="data-box" v-for="identifier in identifiersOfItem">
+                <IdGroup v-if="item[identifier.handle]" 
+                  :id="item[identifier.handle].value" 
+                  :label="identifier.label"
+                  :link="`https://www.geonames.org/${item[identifier.handle].value}`" 
+                  :copyIdOnly />
+              </div>
+              
+            </div>
+
+          </div>
+          <pre v-if="false">{{ item }}</pre>
+          <pre v-if="false">{{ selectedTerm }}</pre>
+          <pre v-if="false">{{ wikidataStore.item }}</pre>
+          <pre v-if="false">{{ identifiers }}</pre>
 
       <div class="controls" v-if="false">
         <button v-if="termsStore.selectedTerm" @click="clearSelectedTerm" class="clear-button">
@@ -403,5 +431,13 @@ header {
       }
     }
   }
+}
+strong {
+  color: #333;
+}
+
+.feedback {
+  margin: 1rem 0;
+  color: #555;
 }
 </style>
