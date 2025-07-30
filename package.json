@@ -1,0 +1,33 @@
+{
+  "name": "anatomy-look-up-vue-0.0.1",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write src/",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "highlight.js": "^11.11.1",
+    "leaflet": "^1.9.4",
+    "markdown-it": "^14.1.0",
+    "pinia": "^3.0.1",
+    "sass": "^1.89.0",
+    "sass-loader": "^16.0.5",
+    "vite-plugin-pages": "^0.33.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.18",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "gh-pages": "^6.3.0",
+    "prettier": "3.5.3",
+    "vite": "^6.2.4",
+    "vite-plugin-vue-devtools": "^7.7.2"
+  },
+  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
+}
