@@ -90,10 +90,11 @@ function clearListOfItems() {
       <div class="selected-term" v-if="true">
         <div class="item-content" v-if="item && identifiersOfItem.length">
               <div class="data-box" v-for="identifier in identifiersOfItem">
+                <pre v-if="true">{{ identifier }}</pre>
                 <IdGroup v-if="item[identifier.handle]" 
                   :id="item[identifier.handle].value" 
                   :label="identifier.label"
-                  :link="`https://www.geonames.org/${item[identifier.handle].value}`" 
+                  :link="`${identifier.baseUrl}/${item[identifier.handle].value}`" 
                   :copyIdOnly />
               </div>
               
@@ -103,7 +104,6 @@ function clearListOfItems() {
           <pre v-if="false">{{ item }}</pre>
           <pre v-if="false">{{ selectedTerm }}</pre>
           <pre v-if="false">{{ wikidataStore.item }}</pre>
-          <pre v-if="false">{{ identifiers }}</pre>
 
       <div class="controls" v-if="false">
         <button v-if="termsStore.selectedTerm" @click="clearSelectedTerm" class="clear-button">
