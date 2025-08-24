@@ -90,7 +90,7 @@ function clearListOfItems() {
       <div class="selected-term" v-if="true">
         <div class="item-content" v-if="item && identifiersOfItem.length">
               <div class="data-box" v-for="identifier in identifiersOfItem">
-                <pre v-if="true">{{ identifier }}</pre>
+                <pre v-if="false">{{ identifier }}</pre>
                 <IdGroup v-if="item[identifier.handle]" 
                   :id="item[identifier.handle].value" 
                   :label="identifier.label"
