@@ -23,39 +23,48 @@ const wikidataStore = useWikidataItemStore()
 const identifiersStore = useIdentifiersStore()
 const { identifiers } = storeToRefs(identifiersStore)
 
-
+function addMissingQ(str) {
+        if (!str.startsWith('Q') && /^\d+$/.test(str) ) {
+            str = 'Q' + str;
+        }
+        return str;
+    }
 
 const termsStore = useTermsStore()
 
-const isValidQid = computed(() => /^[Qq]\d+$/.test(input.value.trim()))
+const isValidQid = computed(() => /^[Qq]\d+$/.test(addMissingQ(input.value.trim())))
 
 async function handleSubmit() {
-    const vars = identifiers.value
-    .filter(identifier => identifier.use)
-    .map(identifier => identifier.handle)
-    .map(v => `?${v}`)
-    .join(' ');
+    let normalized = addMissingQ(input.value.trim())
 
-    const optionals = identifiers.value.map(i => {
-            if (!i.use) return null;
-            return `OPTIONAL { ?item wdt:${i.pid} ?${i.handle} }`
-        })
-    .filter(Boolean)
-    .join(' ');
-    if (!isValidQid.value) {
+    if (!/^[Qq]\d+$/.test(normalized)) {
         console.error('Invalid Q-ID:', input.value)
         return
     }
-    termsStore.setSelectedTerm(input.value.trim())
 
-    await useGetWikidataItem(input.value.trim(), vars, optionals)
-    const item = await useGetWikidataItem(input.value.trim(), vars, optionals)
+    termsStore.setSelectedTerm(normalized)
+
+    const vars = identifiers.value
+        .filter(identifier => identifier.use)
+        .map(identifier => identifier.handle)
+        .map(v => `?${v}`)
+        .join(' ')
+
+    const optionals = identifiers.value.map(i => {
+        if (!i.use) return null
+        return `OPTIONAL { ?item wdt:${i.pid} ?${i.handle} }`
+    })
+    .filter(Boolean)
+    .join(' ')
+
+    const item = await useGetWikidataItem(normalized, vars, optionals)
     if (item) {
         wikidataStore.item = item
     } else {
         console.error('No item found for Q-ID:', input.value)
     }
 }
+
 
 function toggleIdentifier(identifier) {
     identifier.use = !identifier.use
