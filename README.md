@@ -19,6 +19,13 @@ It is a **live-based solution**: no static dataset is used. All information is l
 
 ---
 
+## Demo
+
+You can try the tool directly via GitHub Pages here:  
+👉 [Live Demo](https://bua-dns.github.io/wikidata-items-identificator-lookup/)
+
+---
+
 ## Installation
 
 Clone the repository and install dependencies:
