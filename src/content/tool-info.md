@@ -1,8 +1,14 @@
-Diese Anwendung erlaubt die gezielte Suche nach Ortsnamen und die Anzeige zugehöriger Normdaten-Referenzen.
+Diese Anwendung ermöglicht, zu gegebenen Wikidata-Items schnell und unkompliziert Identifikatoren in gängigen Referenzdaten-Repositorien zu kopieren.
 
-Die Abfrage erfolgt über zwei Schritte:
+-   **Sucheingabe** in der SearchBox: Über die [Wikidata
+    API](https://www.wikidata.org/w/api.php) werden die Items zu einer
+    ID geladen und deren Identifikatoren extrahiert.
+-   **Anzeige** in AppView: Die gefundenen Referenzdaten werden
+    dargestellt, mit der Möglichkeit, entweder die vollständige URI oder
+    nur die ID zu kopieren.
 
-* **Vorschläge** werden über die [Wikidata Search API](https://www.wikidata.org/w/api.php) (wbsearchentities) geladen.
-* Für die **Anreicherung** werden Wikidata und Geonames abgefragt.
+Über die Checkboxes unter dem Suchfeld kann ausgewählt werden, welche Referenzdaten-Identifikatoren einbezogen werden sollen.
 
-Es handelt sich um eine **live-basierte Lösung**: Es wird keine statische Datensammlung verwendet. Die Daten werden in Echtzeit aus Wikidata abgerufen.
+Es handelt sich um eine **live-basierte Lösung**: Die Informationen
+werden in Echtzeit aus Wikidata geladen, nicht aus einer statischen
+Sammlung.

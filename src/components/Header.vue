@@ -72,12 +72,15 @@ p {
 
 .info-box-content {
   margin-top: 1rem;
-  background-color: hsl(210, 31%, 32%);
+  background-color: hsl(210, 11%, 32%);
   padding: 0.75rem 0 0 .75rem;
   font-size: 0.875rem;
-  a {
+  :deep(a) {
     color: #b2d3e9;
     text-decoration: none;
+  }
+  :deep(strong) {
+    color: #ffffff;
   }
 }
 .collapse-icon {
