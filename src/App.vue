@@ -20,7 +20,6 @@ const showRawData = ref(false)
 const term = ref('')
 function onSelect(entity) {
   // entity: { id, label, description, url }
-  console.log('Selected:', entity)
 }
 
 const sampleCsv = `geonamesId,locationDescription,lat,lng
