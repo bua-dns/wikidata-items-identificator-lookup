@@ -78,12 +78,12 @@ function clearListOfItems() {
   <Header />
   <div class="content-container">
     <aside>
-      <WikidataAutosuggest
+      <!-- <WikidataAutosuggest
         v-model="term"
         language="de"
         :limit="12"
         @select="onSelect"
-      />
+      /> -->
       <SearchBoxStatic placeholder="Wikidata-Id (Q-Nummer)" submitButtonText="Identifikatoren anzeigen" />
     </aside>
 
