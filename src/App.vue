@@ -2,6 +2,7 @@
 import { ref, computed } from "vue"
 import { storeToRefs } from 'pinia'
 import SearchBoxStatic from './components/SearchBoxStatic.vue'
+import WikidataAutosuggest from './components/WikidataAutosuggest.vue'
 import { useTermsStore } from './stores/useTermsStore.js'
 import { useWikidataItemStore } from './stores/useWikidataItemStore.js'
 import { useIdentifiersStore } from './stores/useIdentifiersStore'
@@ -14,6 +15,13 @@ import Header from "./components/Header.vue"
 
 // DEV only:
 const showRawData = ref(false)
+
+// Wikidata Autosuggest
+const term = ref('')
+function onSelect(entity) {
+  // entity: { id, label, description, url }
+  console.log('Selected:', entity)
+}
 
 const sampleCsv = `geonamesId,locationDescription,lat,lng
 123456,Sample Location,12.34567,34.56789
@@ -71,6 +79,12 @@ function clearListOfItems() {
   <Header />
   <div class="content-container">
     <aside>
+      <WikidataAutosuggest
+        v-model="term"
+        language="de"
+        :limit="12"
+        @select="onSelect"
+      />
       <SearchBoxStatic placeholder="Wikidata-Id (Q-Nummer)" submitButtonText="Identifikatoren anzeigen" />
     </aside>
 
