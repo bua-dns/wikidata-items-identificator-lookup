@@ -75,10 +75,11 @@ function onFocus() {
 }
 
 function selectSuggestion(item) {
-  input.value = item.label || item.id
+  input.value = `${item.label} (${item.id})` || item.id
   updateModel(input.value)
   emit('select', item)
   close()
+  store.selectedId = item.id
 }
 
 function onKeydown(e) {

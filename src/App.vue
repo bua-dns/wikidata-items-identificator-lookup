@@ -5,6 +5,7 @@ import SearchBoxStatic from './components/SearchBoxStatic.vue'
 import WikidataAutosuggest from './components/WikidataAutosuggest.vue'
 import { useTermsStore } from './stores/useTermsStore.js'
 import { useWikidataItemStore } from './stores/useWikidataItemStore.js'
+import { useWikidataSearchStore } from './stores/useWikidataSearchStore.js'
 import { useIdentifiersStore } from './stores/useIdentifiersStore'
 
 
@@ -30,6 +31,8 @@ const copyIdOnly = ref(false) // This is used to toggle between copying full URI
 
 const termsStore = useTermsStore()
 const wikidataStore = useWikidataItemStore()
+const wikidataSearchStore = useWikidataSearchStore()
+
 const identifiersStore = useIdentifiersStore()
 
 const { identifiers } = storeToRefs(identifiersStore)
@@ -78,12 +81,15 @@ function clearListOfItems() {
   <Header />
   <div class="content-container">
     <aside>
-      <!-- <WikidataAutosuggest
+      <WikidataAutosuggest
         v-model="term"
         language="de"
         :limit="12"
         @select="onSelect"
-      /> -->
+      />
+      <div class="dev-out">
+        {{  wikidataSearchStore.selectedId || 'no item selected' }}
+      </div>
       <SearchBoxStatic placeholder="Wikidata-Id (Q-Nummer)" submitButtonText="Identifikatoren anzeigen" />
     </aside>
 
