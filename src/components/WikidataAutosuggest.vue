@@ -74,12 +74,12 @@ function onFocus() {
   }
 }
 
-function selectSuggestion(item) {
+async function selectSuggestion(item) {
   input.value = `${item.label} (${item.id})` || item.id
   updateModel(input.value)
   emit('select', item)
   close()
-  store.selectedId = item.id
+  await store.selectBySuggestion(item, { language: 'en' })
 }
 
 function onKeydown(e) {

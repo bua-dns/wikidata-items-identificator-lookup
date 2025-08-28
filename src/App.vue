@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from "vue"
 import { storeToRefs } from 'pinia'
-import SearchBoxStatic from './components/SearchBoxStatic.vue'
 import WikidataAutosuggest from './components/WikidataAutosuggest.vue'
 import { useTermsStore } from './stores/useTermsStore.js'
 import { useWikidataItemStore } from './stores/useWikidataItemStore.js'
@@ -13,6 +12,7 @@ import IdGroup from "./components/IdGroup.vue"
 import BooleanSwitch from "./components/BooleanSwitch.vue"
 import CsvDownloader from "./components/CsvDownloader.vue"
 import Header from "./components/Header.vue"
+import IdentifierSelection from "./components/IdentifierSelection.vue"
 
 // DEV only:
 const showRawData = ref(false)
@@ -87,10 +87,11 @@ function clearListOfItems() {
         :limit="12"
         @select="onSelect"
       />
-      <div class="dev-out">
+      <div class="dev-out" v-if="false">
         {{  wikidataSearchStore.selectedId || 'no item selected' }}
+        {{  wikidataSearchStore.selectedItem }}
       </div>
-      <SearchBoxStatic placeholder="Wikidata-Id (Q-Nummer)" submitButtonText="Identifikatoren anzeigen" />
+      <IdentifierSelection />
     </aside>
 
     <main>

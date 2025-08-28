@@ -5,6 +5,7 @@ import { useGetWikidataItem } from '@/use/useGetWikidataItem.js'
 
 export const useWikidataItemStore = defineStore('wikidataItem', () => {
   const item = ref(null)
+  const error = ref(null)
 
   function clearItem() {
     item.value = null
