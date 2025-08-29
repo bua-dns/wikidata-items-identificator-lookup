@@ -91,7 +91,9 @@ function clearListOfItems() {
         {{  wikidataSearchStore.selectedId || 'no item selected' }}
         {{  wikidataSearchStore.selectedItem }}
       </div>
-      <IdentifierSelection />
+      <div class="identifier-selection">
+        <IdentifierSelection />
+      </div>
     </aside>
 
     <main>
@@ -191,6 +193,9 @@ header {
     overflow-y: auto;
 
     .info-box {
+      margin-top: 1rem;
+    }
+    .identifier-selection {
       margin-top: 1rem;
     }
   }
