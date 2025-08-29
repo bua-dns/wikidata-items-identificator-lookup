@@ -23,7 +23,7 @@ const emit = defineEmits([
 ])
 
 const languages = ['en', 'de', 'fr', 'es', 'it', 'ru']
-const lang = ref('ru')
+const lang = ref('en') // 'en' preselected
 
 const store = useWikidataSearchStore()
 const itemStore = useWikidataItemStore()
@@ -155,6 +155,18 @@ function clearInput() {
   itemStore.clearItem()
 }
 
+// Clear search when language changes
+watch(lang, () => {
+  // Clear input + model + stores
+  input.value = ''
+  updateModel('')
+  store.clear()
+  itemStore.clearItem()
+  // Optionally: don't auto-search on language change,
+  // user must type again
+})
+
+
 onMounted(() => {
   document.addEventListener('scroll', close, true)
 })
@@ -167,6 +179,24 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wd-autosuggest" @keydown="onKeydown" @focusout="onBlur">
+    <!-- Language selector -->
+    <div class="lang-select" role="radiogroup" aria-label="Search language">
+      <h3>Suchsprache</h3>
+      <label
+        v-for="code in languages"
+        :key="code"
+        class="lang-option"
+      >
+        <input
+          type="radio"
+          name="wd-lang"
+          :value="code"
+          v-model="lang"
+        />
+        <span class="lang-label">{{ code }}</span>
+      </label>
+    </div>
+
     <div class="field">
       <input
         :placeholder="placeholder"
@@ -217,6 +247,36 @@ onBeforeUnmount(() => {
 .wd-autosuggest {
   position: relative;
   max-width: 640px;
+
+.lang-select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+
+  .lang-option {
+    display: inline-flex;
+    align-items: center;   // vertical centering
+    gap: 0.35rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    input[type="radio"] {
+      cursor: pointer;
+      margin: 0;           // remove default offset
+      position: relative;
+      top: 0;              // ensure circle sits centered
+    }
+
+    .lang-label {
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1;      // makes text align better with the radio
+    }
+  }
+}
+
+
 
   .field {
     position: relative;
