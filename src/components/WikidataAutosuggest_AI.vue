@@ -23,7 +23,7 @@ const emit = defineEmits([
 ])
 
 const languages = ['en', 'de', 'fr', 'es', 'it', 'ru']
-const lang = ref('ru')
+const lang = ref('en') // 'en' preselected
 
 const store = useWikidataSearchStore()
 const itemStore = useWikidataItemStore()
@@ -155,6 +155,13 @@ function clearInput() {
   itemStore.clearItem()
 }
 
+// Re-run search when language changes (if there is enough input)
+watch(lang, () => {
+  if (input.value.trim().length >= props.minChars) {
+    debouncedSearch(input.value)
+  }
+})
+
 onMounted(() => {
   document.addEventListener('scroll', close, true)
 })
@@ -167,6 +174,23 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wd-autosuggest" @keydown="onKeydown" @focusout="onBlur">
+    <!-- Language selector -->
+    <div class="lang-select" role="radiogroup" aria-label="Search language">
+      <label
+        v-for="code in languages"
+        :key="code"
+        class="lang-option"
+      >
+        <input
+          type="radio"
+          name="wd-lang"
+          :value="code"
+          v-model="lang"
+        />
+        <span class="lang-label">{{ code }}</span>
+      </label>
+    </div>
+
     <div class="field">
       <input
         :placeholder="placeholder"
@@ -217,6 +241,30 @@ onBeforeUnmount(() => {
 .wd-autosuggest {
   position: relative;
   max-width: 640px;
+
+  .lang-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+
+    .lang-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+
+      input[type="radio"] {
+        cursor: pointer;
+      }
+
+      .lang-label {
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+    }
+  }
 
   .field {
     position: relative;
