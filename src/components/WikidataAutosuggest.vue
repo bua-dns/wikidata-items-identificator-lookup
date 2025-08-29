@@ -2,6 +2,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useWikidataSearchStore } from '@/stores/useWikidataSearchStore'
+import { useWikidataItemStore } from '@/stores/useWikidataItemStore'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
@@ -22,6 +23,7 @@ const emit = defineEmits([
 ])
 
 const store = useWikidataSearchStore()
+const itemStore = useWikidataItemStore()
 
 // local input state mirrors v-model
 const input = ref(props.modelValue)
@@ -29,6 +31,19 @@ watch(() => props.modelValue, (v) => { if (v !== input.value) input.value = v })
 
 function updateModel(v) {
   emit('update:modelValue', v)
+}
+
+// --- normalization helper: add "Q" if value is digits-only; normalize "q123" -> "Q123"
+// Only trim when digits-only or Q-id, leave text inputs as-is
+function normalizeQidOnDigits(value) {
+  const str = String(value ?? '')
+  if (/^\d+$/.test(str.trim())) {
+    return 'Q' + str.trim()
+  }
+  if (/^\s*[qQ]\d+\s*$/.test(str)) {
+    return 'Q' + str.trim().slice(1)
+  }
+  return str
 }
 
 let debounceTimer = null
@@ -60,7 +75,8 @@ function debouncedSearch(term) {
 }
 
 function onInput(e) {
-  const val = e.target.value
+  const raw = e.target.value
+  const val = normalizeQidOnDigits(raw)
   input.value = val
   updateModel(val)
   open()
@@ -133,6 +149,7 @@ function clearInput() {
   store.clear()
   emit('clear')
   open()
+  itemStore.clearItem()
 }
 
 onMounted(() => {
